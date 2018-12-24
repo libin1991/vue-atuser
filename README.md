@@ -1,5 +1,6 @@
 # vue-atuser
 Vue@某人，At某人，仿新浪微博@某人，@user
+
 ![](https://raw.githubusercontent.com/libin1991/vue-atuser/master/atuser.gif)
 
 # DEMO
