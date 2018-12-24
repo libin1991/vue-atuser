@@ -398,7 +398,7 @@ Vue@某人，At某人，仿新浪微博@某人，@user
 ```
 > index.vue
 
-```
+```js
 <template>
 	<div class="atuser">
 		<at :members="members" @enterSend="send" v-model="inputcontent">
