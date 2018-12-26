@@ -11,7 +11,14 @@
 				</li>
 			</ul>
 		</div>
-		<slot></slot>
+		<textarea ref="textarea" class="editor textarea-content"
+			@keyup="getCursorRect($event)" 
+			@keydown="getCursorRect($event)" 
+			@mousedown="getCursorRect($event)"
+			@mouseup="getCursorRect($event)"
+			@focus="getCursorRect($event)"
+			placeholder="按下Enter发送内容/ Command+Enter换行"
+			></textarea>
 	</div>
 </template>
 
@@ -21,7 +28,7 @@
 		props: {
 			value: { //输入框初始值
 				type: String,
-				default: null
+				default: ''
 			},
 			suffix: { //插入字符链接
 				type: String,
@@ -86,17 +93,12 @@
 				this.handleInput(true)
 			},
 			value(value, oldValue) {
-				if(this.bindsValue) {
-					this.handleValueUpdate(value)
-				}
+				this.handleValueUpdate(value)
 			}
 		},
 		mounted() {
-			if(this.bindsValue) {
-				this.handleValueUpdate(this.value)
-			}
+			this.handleValueUpdate(this.value)
 		},
-
 		methods: {
 			getAtAndIndex(text, ats) {
 				return ats.map((at) => {
@@ -129,7 +131,7 @@
 			handleKeyDown(e) {
 				const {
 					atwho
-				} = this
+				} = this;
 				if(atwho) {
 					if(e.keyCode === 38 || e.keyCode === 40) { // ↑/↓
 						if(!(e.metaKey || e.ctrlKey)) {
@@ -158,11 +160,21 @@
 						this.handleInput()
 					}, 50)
 				}
-				if(e.keyCode === 8) { //删除
+				if(e.keyCode === 8) { //删除del键
 					//this.handleDelete(e)
 				}
-				if(e.keyCode === 13) { //删除
-					this.$emit("enterSend",e)
+			    
+				if((e.keyCode === 13)) { //回车
+				   if( !e.metaKey){  //没有按command
+						this.$emit("enterSend",e)
+				   }else {   //按下command
+						const el = this.$el.querySelector('textarea')
+				   	    if(!el.value.replace(/(^\s*)|(\s*$)/g, "").length){
+				   	    	   console.log('没有输入有效字符不可换行');
+				   	    	   return;
+				   	    }
+                        this.$emit('input', el.value+'\n')
+				   }
 				}
 			},
 
@@ -309,6 +321,66 @@
 				this.insertText(t, el)
 				this.$emit('insert', curItem) //插入字符
 				this.handleInput()
+			},
+			getCursorRect(e) {
+				console.log(e.type)
+				var isIE = !(!document.all);  //是不是IE
+				var start = 0,
+					end = 0;
+				var oTextarea = this.$el.querySelector("textarea");
+				if(isIE) {
+					var sTextRange = document.selection.createRange();
+
+					//判断选中的是不是textarea对象  
+					if(sTextRange.parentElement() == oTextarea) {
+						//创建一个TextRange对象  
+						var oTextRange = document.body.createTextRange();
+						//移动文本范围以便范围的开始和结束位置能够完全包含给定元素的文本。  
+						oTextRange.moveToElementText(oTextarea);
+
+						//此时得到两个 TextRange  
+						//oTextRange文本域(textarea)中文本的TextRange对象  
+						//sTextRange是选中区域文本的TextRange对象  
+
+						//compareEndPoints方法介绍，compareEndPoints方法用于比较两个TextRange对象的位置  
+						//StartToEnd  比较TextRange开头与参数TextRange的末尾。  
+						//StartToStart比较TextRange开头与参数TextRange的开头。  
+						//EndToStart  比较TextRange末尾与参数TextRange的开头。  
+						//EndToEnd    比较TextRange末尾与参数TextRange的末尾。  
+
+						//moveStart方法介绍，更改范围的开始位置  
+						//character 按字符移动  
+						//word       按单词移动  
+						//sentence  按句子移动  
+						//textedit  启动编辑动作  
+
+						//这里我们比较oTextRange和sTextRange的开头，的到选中区域的开头位置  
+						for(start = 0; oTextRange.compareEndPoints("StartToStart", sTextRange) < 0; start++) {
+							oTextRange.moveStart('character', 1);
+						}
+						//需要计算一下\n的数目(按字符移动的方式不计\n,所以这里加上)   
+						for(var i = 0; i <= start; i++) {
+							if(oTextarea.value.charAt(i) == '\n') {
+								start++;
+							}
+						}
+
+						//再计算一次结束的位置  
+						oTextRange.moveToElementText(oTextarea);
+						for(end = 0; oTextRange.compareEndPoints('StartToEnd', sTextRange) < 0; end++) {
+							oTextRange.moveStart('character', 1);
+						}
+						for(var i = 0; i <= end; i++) {
+							if(oTextarea.value.charAt(i) == '\n') {
+								end++;
+							}
+						}
+					}
+				} else {
+					start = oTextarea.selectionStart;
+					end = oTextarea.selectionEnd;
+				}
+				this.$emit("cursorRect",{start,end});   //获取鼠标当前在字符串位置
 			}
 		}
 	}
@@ -384,6 +456,16 @@
 					width: 13px;
 				}
 			}
+		}
+		.editor{
+			width: 100%;
+			color: blue;
+			height: 160px;
+			display: block;
+			box-sizing: border-box;
+			padding: 8px;
+			font-size: 14px;
+			background:white;
 		}
 	}
 </style>

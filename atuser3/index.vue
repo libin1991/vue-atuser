@@ -1,7 +1,6 @@
 <template>
 	<div class="atuser">
-		<at :members="members" @enterSend="send" v-model="inputcontent">
-			<textarea class="editor"></textarea>
+		<at :members="members" @enterSend="send" v-model="inputcontent" @cursorRect="cursorRect">
 		</at>
 	</div>
 </template>
@@ -22,6 +21,10 @@
 		methods: {
 			send(e) { //回车发送
 				console.log(e)
+			},
+			cursorRect(val){
+				console.log("当前光标点击位置：")
+				console.log(val)
 			}
 		}
 	}
