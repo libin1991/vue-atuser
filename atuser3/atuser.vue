@@ -11,14 +11,7 @@
 				</li>
 			</ul>
 		</div>
-		<textarea ref="textarea" class="editor textarea-content"
-			@keyup="getCursorRect($event)" 
-			@keydown="getCursorRect($event)" 
-			@mousedown="getCursorRect($event)"
-			@mouseup="getCursorRect($event)"
-			@focus="getCursorRect($event)"
-			placeholder="按下Enter发送内容/ Command+Enter换行"
-			></textarea>
+		<textarea ref="textarea" class="editor textarea-content" @keyup="getCursorRect($event)" @keydown="getCursorRect($event)" @mousedown="getCursorRect($event)" @mouseup="getCursorRect($event)" @focus="getCursorRect($event)" placeholder="按下Enter发送内容/ Command+Enter换行"></textarea>
 	</div>
 </template>
 
@@ -163,24 +156,33 @@
 				if(e.keyCode === 8) { //删除del键
 					//this.handleDelete(e)
 				}
-			    
+
 				if((e.keyCode === 13)) { //回车
-				   if( !e.metaKey){  //没有按command
-						this.$emit("enterSend",e)
-				   }else {   //按下command
-						const el = this.$el.querySelector('textarea')
-				   	    if(!el.value.replace(/(^\s*)|(\s*$)/g, "").length){
-				   	    	   console.log('没有输入有效字符不可换行');
-				   	    	   return;
-				   	    }
-                        this.$emit('input', el.value+'\n')
-				   }
+					if(/macintosh|mac os x/i.test(navigator.userAgent)) { //是不mac
+						if(!e.metaKey) { //Mac没有按command
+							this.$emit("enterSend", e)
+							return
+						}
+					} else {
+                        if(!e.ctrlKey) { //win没有按command
+							this.$emit("enterSend", e)
+							return
+						}
+					}
+					
+					const el = this.$el.querySelector('textarea')  //按下command
+					if(!el.value.replace(/(^\s*)|(\s*$)/g, "").length) {
+						console.log('没有输入有效字符不可换行');
+						return;
+					}
+					this.$emit('input', el.value + '\n')
+
 				}
 			},
 
 			handleInput(event) {
 				const el = this.$el.querySelector('textarea')
-				this.$emit('input', el.value)      //更新父组件
+				this.$emit('input', el.value) //更新父组件
 				const text = el.value.slice(0, el.selectionEnd)
 				if(text) {
 					const {
@@ -324,7 +326,7 @@
 			},
 			getCursorRect(e) {
 				console.log(e.type)
-				var isIE = !(!document.all);  //是不是IE
+				var isIE = !(!document.all); //是不是IE
 				var start = 0,
 					end = 0;
 				var oTextarea = this.$el.querySelector("textarea");
@@ -380,7 +382,10 @@
 					start = oTextarea.selectionStart;
 					end = oTextarea.selectionEnd;
 				}
-				this.$emit("cursorRect",{start,end});   //获取鼠标当前在字符串位置
+				this.$emit("cursorRect", {
+					start,
+					end
+				}); //获取鼠标当前在字符串位置
 			}
 		}
 	}
@@ -457,7 +462,7 @@
 				}
 			}
 		}
-		.editor{
+		.editor {
 			width: 100%;
 			color: blue;
 			height: 160px;
@@ -465,7 +470,7 @@
 			box-sizing: border-box;
 			padding: 8px;
 			font-size: 14px;
-			background:white;
+			background: white;
 		}
 	}
 </style>
