@@ -3,7 +3,8 @@ Vue@某人，At某人，仿新浪微博@某人，@user
 
 ![](https://raw.githubusercontent.com/libin1991/vue-atuser/master/atuser.gif)
 
-# vue-edit [Web聊天工具的富文本输入框](https://juejin.im/post/5c79f249e51d457ab52e67e1)
+# vue-edit 
+### [Web聊天工具的富文本输入框](https://juejin.im/post/5c79f249e51d457ab52e67e1)
 ![](https://raw.githubusercontent.com/libin1991/vue-atuser/master/edit.gif)
 
 # 获取光标位置,设置光标位置
