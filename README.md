@@ -8,7 +8,7 @@ Vue@某人，At某人，仿新浪微博@某人，@user
 ![](https://raw.githubusercontent.com/libin1991/vue-atuser/master/edit.gif)
 ### [div+contenteditable 实现富文本发布框的小结](https://juejin.im/post/5c851ce8f265da2dc0068c14)
 ### [实现高度“听话”的多行文本输入框](https://juejin.im/post/5c9a1645e51d4559bb5c666f)
-
+### [原生js 实现输入框emoji表情发布](https://juejin.im/post/5c9cd1ecf265da60d0005235)
 # 获取光标位置,设置光标位置
 ```
 /**
