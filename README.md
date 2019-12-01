@@ -45,7 +45,7 @@ export const setCursorPosition = (element, cursorPosition) => {
   sel.addRange(range)
 }
 ```
-
+### [Vue实现图片与文字混输🔥](https://juejin.im/post/5de26d39e51d455da17be1e3)
 # DEMO
 > atuser.vue
 
