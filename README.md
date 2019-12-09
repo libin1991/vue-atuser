@@ -5,6 +5,7 @@ Vue@某人，At某人，仿新浪微博@某人，@user
 
 # vue-edit 
 ### [Vue实现渲染数据后控制滚动条位置📜](https://juejin.im/post/5ded14d3e51d4557ff13fe56)
+### [Element.scrollIntoView()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollIntoView)
 ```
 Element.scrollIntoView()    // 如果为false，元素的底端将和其所在滚动区的可视区域的底端对齐。
 ```
