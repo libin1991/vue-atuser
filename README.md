@@ -4,6 +4,10 @@ Vue@某人，At某人，仿新浪微博@某人，@user
 ![](https://raw.githubusercontent.com/libin1991/vue-atuser/master/atuser.gif)
 
 # vue-edit 
+### [Vue实现渲染数据后控制滚动条位置📜](https://juejin.im/post/5ded14d3e51d4557ff13fe56)
+```
+Element.scrollIntoView()    // 如果为false，元素的底端将和其所在滚动区的可视区域的底端对齐。
+```
 ### [Web聊天工具的富文本输入框](https://juejin.im/post/5c79f249e51d457ab52e67e1)
 ![](https://raw.githubusercontent.com/libin1991/vue-atuser/master/edit.gif)
 ### [div+contenteditable 实现富文本发布框的小结](https://juejin.im/post/5c851ce8f265da2dc0068c14)
